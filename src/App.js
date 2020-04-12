@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react'
 import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Cards from './components/Cards/Cards'
+import Count from './components/Count/Count'
+import CountryPicker from './components/CountryPicker/CountryPicker'
+import {fetchData} from './api/index'
+import image from './cov.png';
+import { StylesProvider } from '@material-ui/core';
+export default class App extends Component {
+  state={
+    data:{},
+  }
+  async componentDidMount()
+  {
+      const fetchedData=await fetchData();
+      console.log(fetchedData);
+      this.setState({data:fetchedData});
+  }
+  render() {
+    const {data}=this.state
+    return (
+      <div>
+      <img className="logoImage" src={image} alt="COVID-19" />
+      <Cards cardData={data}/>
+      <Count countData={data.cases_time_series}/>
+      
+      </div>
+    )
+  }
 }
-
-export default App;
